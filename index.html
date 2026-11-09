@@ -1,92 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Christmas Memories</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
-    :root { --green:#123b2c; --gold:#d9b45a; --cream:#fbf7ee; --ink:#22302a; --muted:#6b7a72; --red:#9e2a2b; }
-    * { box-sizing: border-box; }
-    body { margin:0; background:var(--cream); color:var(--ink); font-family:'Lora', Georgia, serif; }
-    header { background:var(--green); color:var(--cream); text-align:center; padding:32px 20px 28px; }
-    header .ward { color:var(--gold); letter-spacing:.12em; text-transform:uppercase; font-size:13px; }
-    header h1 { font-family:'Playfair Display', Georgia, serif; font-weight:600; margin:8px 0 6px; font-size:30px; }
-    header p { margin:0; opacity:.85; font-size:15px; }
-    main { max-width:620px; margin:0 auto; padding:24px 18px 48px; }
-    .intro { font-size:16px; line-height:1.55; margin-bottom:22px; }
-    .deadline { display:inline-block; margin-top:8px; color:var(--red); font-weight:600; font-size:14px; }
-    .card { background:#fff; border:1px solid #e6e0d0; border-radius:14px; padding:18px; margin-bottom:16px; }
-    label.q { display:block; font-weight:600; margin-bottom:8px; line-height:1.4; }
-    input[type=text], textarea { width:100%; font:inherit; font-size:16px; padding:12px; border:1px solid #cfc8b6; border-radius:10px; background:#fffdf8; }
+    :root {
+      --night:#0e1a2f; --night2:#1b2c4a; --gold:#e0be6a; --gold-soft:#f3e2b3;
+      --cream:#fbf7ee; --ink:#22302a; --muted:#6b7a72;
+      --holly:#1f5a3d; --berry:#a8323a;
+    }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--cream); color:var(--ink); font-family:'Lora', Georgia, serif; overflow-x:hidden; }
+
+    /* ---------- Night-sky header ---------- */
+    header {
+      position:relative; overflow:hidden; text-align:center; color:var(--cream);
+      padding:30px 20px 34px;
+      background:
+        radial-gradient(circle at 50% 8%, rgba(255,240,200,.35) 0, rgba(255,240,200,0) 22%),
+        radial-gradient(ellipse at 50% 120%, var(--night2) 0, var(--night) 70%);
+    }
+    /* twinkling stars */
+    header::before, header::after {
+      content:""; position:absolute; inset:0; pointer-events:none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 18%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 28% 42%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 82% 22%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 70% 55%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 92% 70%, #fff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 6% 66%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 40% 12%, #fff 50%, transparent 51%),
+        radial-gradient(1px 1px at 60% 30%, #fff 50%, transparent 51%);
+      animation:twinkle 4s ease-in-out infinite alternate;
+    }
+    header::after { transform:translate(7%, 9%); animation-delay:2s; opacity:.7; }
+    @keyframes twinkle { from { opacity:.35; } to { opacity:1; } }
+
+    .star {
+      position:relative; z-index:1; width:34px; height:34px; margin:0 auto 6px;
+      filter:drop-shadow(0 0 10px rgba(255,236,180,.9));
+    }
+    .christus-wrap { position:relative; z-index:1; width:160px; height:210px; margin:4px auto 10px; }
+    .christus-wrap::before { /* soft white halo */
+      content:""; position:absolute; inset:-30px;
+      background:radial-gradient(ellipse at 50% 45%, rgba(255,245,220,.30) 0, rgba(255,250,235,.10) 40%, transparent 68%);
+    }
+    .christus {
+      position:relative; width:100%; height:100%; object-fit:cover; object-position:center;
+      -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%);
+              mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 60%, transparent 100%);
+      filter:brightness(1.05) contrast(1.02);
+    }
+    .ward { position:relative; z-index:1; color:var(--gold); letter-spacing:.16em; text-transform:uppercase; font-size:13px; }
+    header h1 {
+      position:relative; z-index:1; font-family:'Playfair Display', Georgia, serif; font-weight:600;
+      margin:6px 0 4px; font-size:32px; text-shadow:0 0 18px rgba(255,236,180,.35);
+    }
+    header .sub { position:relative; z-index:1; margin:0; opacity:.85; font-size:15px; }
+    .verse {
+      position:relative; z-index:1; max-width:420px; margin:16px auto 0; font-style:italic; font-size:15px;
+      line-height:1.5; color:var(--gold-soft);
+    }
+    .verse cite { display:block; font-style:normal; font-size:12px; letter-spacing:.08em; margin-top:4px; color:var(--gold); }
+
+    /* garland of lights under the header */
+    .lights { height:22px; background:var(--night); position:relative; overflow:hidden; }
+    .lights::before {
+      content:""; position:absolute; left:-10px; right:-10px; top:-14px; height:24px;
+      border-bottom:2px solid #2b3d2f; border-radius:0 0 50% 50% / 0 0 100% 100%;
+    }
+    .bulbs { position:absolute; inset:0; display:flex; justify-content:space-around; align-items:center; }
+    .bulbs i {
+      width:8px; height:12px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; display:block;
+      animation:glow 1.6s ease-in-out infinite alternate;
+    }
+    .bulbs i:nth-child(4n+1) { background:#ff5a5a; box-shadow:0 0 8px #ff5a5a; }
+    .bulbs i:nth-child(4n+2) { background:#ffd65a; box-shadow:0 0 8px #ffd65a; animation-delay:.4s; }
+    .bulbs i:nth-child(4n+3) { background:#6ee08a; box-shadow:0 0 8px #6ee08a; animation-delay:.8s; }
+    .bulbs i:nth-child(4n+4) { background:#6fb6ff; box-shadow:0 0 8px #6fb6ff; animation-delay:1.2s; }
+    @keyframes glow { from { opacity:.45; } to { opacity:1; } }
+
+    /* ---------- Body ---------- */
+    main { position:relative; z-index:1; max-width:620px; margin:0 auto; padding:24px 18px 30px; }
+    .intro { font-size:16px; line-height:1.6; margin-bottom:22px; }
+    .deadline {
+      display:inline-block; margin-top:10px; color:#fff; background:var(--berry); font-weight:600; font-size:13px;
+      padding:4px 12px; border-radius:999px;
+    }
+    .card {
+      position:relative; background:#fff; border:1px solid #e6e0d0; border-radius:14px; padding:18px;
+      margin-bottom:16px; box-shadow:0 1px 0 rgba(0,0,0,.03);
+    }
+    .card.q-card { border-top:4px solid var(--holly); }
+    .card.q-card:nth-of-type(odd) { border-top-color:var(--berry); }
+    .q-head { display:flex; gap:12px; align-items:flex-start; margin-bottom:10px; }
+    .q-icon { flex:none; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; background:#f6efdc; }
+    .q-icon svg { width:22px; height:22px; }
+    label.q { display:block; font-weight:600; line-height:1.4; }
+    input[type=text], textarea {
+      width:100%; font:inherit; font-size:16px; padding:12px; border:1px solid #cfc8b6; border-radius:10px; background:#fffdf8;
+    }
     textarea { min-height:96px; resize:vertical; }
     input:focus, textarea:focus { outline:2px solid var(--gold); border-color:var(--gold); }
     .count { text-align:right; font-size:12px; color:var(--muted); margin-top:4px; }
-    .hint { font-size:13px; color:var(--muted); margin:4px 0 0; }
-    .photo-drop { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
-      border:2px dashed #cfc8b6; border-radius:12px; padding:22px; cursor:pointer; text-align:center; background:#fffdf8; }
-    .photo-drop img { max-width:100%; max-height:280px; border-radius:8px; display:none; }
+    .hint { font-size:13px; color:var(--muted); margin:6px 0 0; }
+    .photo-drop {
+      display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+      border:2px dashed #d8c99b; border-radius:12px; padding:22px; cursor:pointer; text-align:center; background:#fffaf0;
+    }
+    .photo-drop img { max-width:100%; max-height:280px; border-radius:8px; display:none; border:3px solid var(--gold); }
     .photo-drop span { color:var(--muted); font-size:14px; }
-    .photo-drop .btn-pick { background:var(--green); color:var(--cream); border:none; padding:10px 18px; border-radius:999px; font:inherit; font-weight:600; }
+    .photo-drop .btn-pick {
+      background:var(--holly); color:var(--cream); border:none; padding:10px 18px; border-radius:999px; font-weight:600; font-size:15px;
+    }
     #photo { display:none; }
     .consent { display:flex; gap:10px; align-items:flex-start; font-size:15px; line-height:1.4; }
-    .consent input { width:20px; height:20px; margin-top:2px; flex:none; }
-    button.submit { width:100%; background:var(--red); color:#fff; border:none; padding:16px; border-radius:12px;
-      font-family:'Playfair Display', Georgia, serif; font-size:20px; cursor:pointer; }
+    .consent input { width:20px; height:20px; margin-top:2px; flex:none; accent-color:var(--holly); }
+    button.submit {
+      width:100%; background:linear-gradient(180deg, #b93a42, var(--berry)); color:#fff; border:none; padding:16px; border-radius:12px;
+      font-family:'Playfair Display', Georgia, serif; font-size:20px; cursor:pointer; box-shadow:0 4px 14px rgba(168,50,58,.3);
+    }
     button.submit:disabled { opacity:.6; cursor:wait; }
-    .error { color:var(--red); font-weight:600; margin:10px 0; display:none; }
-    .thanks { display:none; text-align:center; padding:40px 10px; }
-    .thanks h2 { font-family:'Playfair Display', Georgia, serif; color:var(--green); font-size:28px; margin:0 0 10px; }
-    .star { color:var(--gold); font-size:34px; }
+    .error { color:var(--berry); font-weight:600; margin:10px 0; display:none; }
+
+    .thanks { display:none; text-align:center; padding:30px 10px 10px; }
+    .thanks h2 { font-family:'Playfair Display', Georgia, serif; color:var(--night); font-size:30px; margin:6px 0 10px; }
+    .thanks .verse { color:var(--holly); }
+    .thanks .verse cite { color:var(--muted); }
+
+    footer { text-align:center; font-size:12px; color:var(--muted); padding:0 18px 28px; }
+    footer a { color:var(--muted); }
+
+    /* ---------- Snow ---------- */
+    .snow { position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
+    .flake {
+      position:absolute; top:-12px; color:#fff; user-select:none; text-shadow:0 0 3px rgba(120,140,170,.6);
+      animation:fall linear infinite;
+    }
+    @keyframes fall {
+      0%   { transform:translate(0,-10px) rotate(0deg); }
+      50%  { transform:translate(18px,50vh) rotate(180deg); }
+      100% { transform:translate(-8px,105vh) rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .snow { display:none; }
+      header::before, header::after, .bulbs i { animation:none; }
+    }
   </style>
 </head>
 <body>
+  <div class="snow" id="snow" aria-hidden="true"></div>
+
   <header>
+    <svg class="star" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="#ffe9a8" d="M12 0l2.2 8.6L24 12l-9.8 3.4L12 24l-2.2-8.6L0 12l9.8-3.4z"/>
+    </svg>
+    <div class="christus-wrap" id="featureWrap">
+      <img class="christus" src="nativity.jpg" alt="The Nativity, by Ted Henninger"
+           onerror="document.getElementById('featureWrap').style.display='none'">
+    </div>
     <div class="ward" id="wardName"></div>
     <h1>Christmas Memories</h1>
-    <p id="partyTitle"></p>
+    <p class="sub" id="partyTitle"></p>
+    <p class="verse">“For unto you is born this day in the city of David a Saviour, which is Christ the Lord.”
+      <cite>LUKE 2:11</cite></p>
   </header>
+  <div class="lights" aria-hidden="true"><div class="bulbs" id="bulbs"></div></div>
 
   <main>
     <form id="f" novalidate>
       <div class="intro">
-        We're putting together a slideshow of our ward families for the Christmas party.
-        Please answer three short questions and share a favorite family photo.
-        It only takes a few minutes.
+        As we celebrate the birth of our Savior, we'd love to share a glimpse of each family in our ward
+        at the Christmas party. Please answer three short questions and add a favorite family photo.
+        It only takes a few minutes!
         <br><span class="deadline" id="deadline"></span>
       </div>
 
       <div class="card">
-        <label class="q" for="family">Family name</label>
+        <label class="q" for="family" style="margin-bottom:10px">Family name</label>
         <input type="text" id="family" maxlength="80" placeholder="e.g. The Johnson Family" autocomplete="family-name">
       </div>
 
-      
-      <div class="card">
-        <label class="q" for="a0">What is one Christmas tradition from your past that you would love to keep, or bring back?</label>
+      <div class="card q-card">
+        <div class="q-head">
+          <div class="q-icon" aria-hidden="true">
+            <!-- candle -->
+            <svg viewBox="0 0 24 24"><path fill="#e0a83a" d="M12 1c1.6 2 2.4 3.4 2.4 4.6A2.4 2.4 0 0 1 12 8a2.4 2.4 0 0 1-2.4-2.4C9.6 4.4 10.4 3 12 1z"/><rect x="9" y="9" width="6" height="12" rx="1" fill="#a8323a"/><rect x="6" y="21" width="12" height="2" rx="1" fill="#1f5a3d"/></svg>
+          </div>
+          <label class="q" for="a0">What is one Christmas tradition from your past that you would love to keep, or bring back?</label>
+        </div>
         <textarea id="a0" maxlength="400" data-count="c0"></textarea>
         <div class="count" id="c0">0 / 400</div>
       </div>
-      
-      <div class="card">
-        <label class="q" for="a1">What does Christmas mean to you?</label>
+
+      <div class="card q-card">
+        <div class="q-head">
+          <div class="q-icon" aria-hidden="true">
+            <!-- star -->
+            <svg viewBox="0 0 24 24"><path fill="#e0be6a" d="M12 1l2.6 8.4L23 12l-8.4 2.6L12 23l-2.6-8.4L1 12l8.4-2.6z"/></svg>
+          </div>
+          <label class="q" for="a1">What does Christmas mean to you?</label>
+        </div>
         <textarea id="a1" maxlength="400" data-count="c1"></textarea>
         <div class="count" id="c1">0 / 400</div>
       </div>
-      
-      <div class="card">
-        <label class="q" for="a2">What is one thing you are most grateful for about your family?</label>
+
+      <div class="card q-card">
+        <div class="q-head">
+          <div class="q-icon" aria-hidden="true">
+            <!-- heart -->
+            <svg viewBox="0 0 24 24"><path fill="#a8323a" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 5.3 3.2 1.7-2 3.2-3.2 5.3-3.2 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z"/></svg>
+          </div>
+          <label class="q" for="a2">What is one thing you are most grateful for about your family?</label>
+        </div>
         <textarea id="a2" maxlength="400" data-count="c2"></textarea>
         <div class="count" id="c2">0 / 400</div>
       </div>
-      
 
       <div class="card">
-        <label class="q">Family photo</label>
+        <label class="q" style="margin-bottom:10px">Family photo</label>
         <label class="photo-drop" for="photo">
           <img id="preview" alt="Photo preview">
           <span id="photoHint">A favorite family picture, from any time of year</span>
-          <span class="btn-pick" id="pickText">Choose a photo</span>
+          <span class="btn-pick" id="pickText">📷 Choose a photo</span>
         </label>
         <input type="file" id="photo" accept="image/*">
         <p class="hint">Photos are only used for the ward slideshow.</p>
@@ -100,22 +239,31 @@
       </div>
 
       <div class="error" id="err"></div>
-      <button type="submit" class="submit" id="go">Send our Christmas memories</button>
+      <button type="submit" class="submit" id="go">Send our Christmas memories ✨</button>
     </form>
 
     <div class="thanks" id="thanks">
-      <div class="star">✦</div>
+      <svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style="filter:drop-shadow(0 0 8px rgba(224,190,106,.8))">
+        <path fill="#e0be6a" d="M12 0l2.2 8.6L24 12l-9.8 3.4L12 24l-2.2-8.6L0 12l9.8-3.4z"/>
+      </svg>
       <h2>Thank you!</h2>
       <p>Your family's memories are on their way. We can't wait to share them at the party.</p>
-      <p>Merry Christmas!</p>
+      <p class="verse">“I am the light of the world: he that followeth me shall not walk in darkness, but shall have the light of life.”
+        <cite>JOHN 8:12</cite></p>
+      <p style="font-family:'Playfair Display',serif;font-size:20px;color:var(--berry)">Merry Christmas!</p>
     </div>
   </main>
+
+  <footer>
+    <em>The Nativity</em> by Ted Henninger, courtesy of the
+    <a href="https://www.churchofjesuschrist.org/media/image/mary-joseph-with-baby-jesus-f006e0d" target="_blank" rel="noopener">Gospel Media Library</a>.
+  </footer>
 
 <script>
   /* ====== EDIT THESE ====== */
   var CONFIG = {
     SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzafNetkTwtC6kh8rgnuEPxvznGrCwK9diEvsd8ngddSBYF-nukw7Iz9_TwaYZETmNF/exec',
-    WARD_NAME: 'Summerhaze',
+    WARD_NAME: 'Summerhaze Ward',
     PARTY_TITLE: 'Ward Christmas Party',
     DEADLINE_TEXT: 'Please respond by December 5'   // '' to hide
   };
@@ -123,7 +271,30 @@
   document.getElementById('wardName').textContent = CONFIG.WARD_NAME;
   document.getElementById('partyTitle').textContent = CONFIG.PARTY_TITLE;
   var dl = document.getElementById('deadline');
-  if (CONFIG.DEADLINE_TEXT) dl.textContent = CONFIG.DEADLINE_TEXT; else dl.style.display = 'none';
+  if (CONFIG.DEADLINE_TEXT) dl.textContent = '🎄 ' + CONFIG.DEADLINE_TEXT; else dl.style.display = 'none';
+
+  // String of lights
+  (function () {
+    var b = document.getElementById('bulbs'), n = Math.max(12, Math.round(window.innerWidth / 34));
+    for (var i = 0; i < n; i++) b.appendChild(document.createElement('i'));
+  })();
+
+  // Gentle snowfall
+  (function () {
+    var snow = document.getElementById('snow'), chars = ['❄', '❅', '•', '•'];
+    for (var i = 0; i < 28; i++) {
+      var f = document.createElement('span');
+      f.className = 'flake';
+      f.textContent = chars[i % chars.length];
+      f.style.left = (Math.random() * 100) + 'vw';
+      f.style.fontSize = (8 + Math.random() * 10) + 'px';
+      f.style.opacity = (0.35 + Math.random() * 0.5).toFixed(2);
+      f.style.animationDuration = (9 + Math.random() * 10) + 's';
+      f.style.animationDelay = (-Math.random() * 18) + 's';
+      snow.appendChild(f);
+    }
+  })();
+
   var MAX_PX = 1600;           // longest edge after resize
   var photoDataUrl = null;
 
@@ -142,7 +313,7 @@
       var p = document.getElementById('preview');
       p.src = url; p.style.display = 'block';
       hint.textContent = 'Looks great!';
-      document.getElementById('pickText').textContent = 'Choose a different photo';
+      document.getElementById('pickText').textContent = '📷 Choose a different photo';
     }).catch(function () {
       photoDataUrl = null;
       hint.textContent = "We couldn't read that photo. Please try another one (JPG or PNG works best).";
@@ -200,7 +371,7 @@
         window.scrollTo(0, 0);
       })
       .catch(function (err) {
-        btn.disabled = false; btn.textContent = 'Send our Christmas memories';
+        btn.disabled = false; btn.textContent = 'Send our Christmas memories ✨';
         showError((err && err.message && err.message !== 'Failed to fetch') ? err.message
           : 'Something went wrong sending your memories. Please check your connection and try again.');
       });

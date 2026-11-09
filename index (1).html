@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Christmas Memories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --green:#123b2c; --gold:#d9b45a; --cream:#fbf7ee; --ink:#22302a; --muted:#6b7a72; --red:#9e2a2b; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--cream); color:var(--ink); font-family:'Lora', Georgia, serif; }
+    header { background:var(--green); color:var(--cream); text-align:center; padding:32px 20px 28px; }
+    header .ward { color:var(--gold); letter-spacing:.12em; text-transform:uppercase; font-size:13px; }
+    header h1 { font-family:'Playfair Display', Georgia, serif; font-weight:600; margin:8px 0 6px; font-size:30px; }
+    header p { margin:0; opacity:.85; font-size:15px; }
+    main { max-width:620px; margin:0 auto; padding:24px 18px 48px; }
+    .intro { font-size:16px; line-height:1.55; margin-bottom:22px; }
+    .deadline { display:inline-block; margin-top:8px; color:var(--red); font-weight:600; font-size:14px; }
+    .card { background:#fff; border:1px solid #e6e0d0; border-radius:14px; padding:18px; margin-bottom:16px; }
+    label.q { display:block; font-weight:600; margin-bottom:8px; line-height:1.4; }
+    input[type=text], textarea { width:100%; font:inherit; font-size:16px; padding:12px; border:1px solid #cfc8b6; border-radius:10px; background:#fffdf8; }
+    textarea { min-height:96px; resize:vertical; }
+    input:focus, textarea:focus { outline:2px solid var(--gold); border-color:var(--gold); }
+    .count { text-align:right; font-size:12px; color:var(--muted); margin-top:4px; }
+    .hint { font-size:13px; color:var(--muted); margin:4px 0 0; }
+    .photo-drop { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+      border:2px dashed #cfc8b6; border-radius:12px; padding:22px; cursor:pointer; text-align:center; background:#fffdf8; }
+    .photo-drop img { max-width:100%; max-height:280px; border-radius:8px; display:none; }
+    .photo-drop span { color:var(--muted); font-size:14px; }
+    .photo-drop .btn-pick { background:var(--green); color:var(--cream); border:none; padding:10px 18px; border-radius:999px; font:inherit; font-weight:600; }
+    #photo { display:none; }
+    .consent { display:flex; gap:10px; align-items:flex-start; font-size:15px; line-height:1.4; }
+    .consent input { width:20px; height:20px; margin-top:2px; flex:none; }
+    button.submit { width:100%; background:var(--red); color:#fff; border:none; padding:16px; border-radius:12px;
+      font-family:'Playfair Display', Georgia, serif; font-size:20px; cursor:pointer; }
+    button.submit:disabled { opacity:.6; cursor:wait; }
+    .error { color:var(--red); font-weight:600; margin:10px 0; display:none; }
+    .thanks { display:none; text-align:center; padding:40px 10px; }
+    .thanks h2 { font-family:'Playfair Display', Georgia, serif; color:var(--green); font-size:28px; margin:0 0 10px; }
+    .star { color:var(--gold); font-size:34px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="ward" id="wardName"></div>
+    <h1>Christmas Memories</h1>
+    <p id="partyTitle"></p>
+  </header>
+
+  <main>
+    <form id="f" novalidate>
+      <div class="intro">
+        We're putting together a slideshow of our ward families for the Christmas party.
+        Please answer three short questions and share a favorite family photo.
+        It only takes a few minutes.
+        <br><span class="deadline" id="deadline"></span>
+      </div>
+
+      <div class="card">
+        <label class="q" for="family">Family name</label>
+        <input type="text" id="family" maxlength="80" placeholder="e.g. The Johnson Family" autocomplete="family-name">
+      </div>
+
+      
+      <div class="card">
+        <label class="q" for="a0">What is one Christmas tradition from your past that you would love to keep, or bring back?</label>
+        <textarea id="a0" maxlength="400" data-count="c0"></textarea>
+        <div class="count" id="c0">0 / 400</div>
+      </div>
+      
+      <div class="card">
+        <label class="q" for="a1">What does Christmas mean to you?</label>
+        <textarea id="a1" maxlength="400" data-count="c1"></textarea>
+        <div class="count" id="c1">0 / 400</div>
+      </div>
+      
+      <div class="card">
+        <label class="q" for="a2">What is one thing you are most grateful for about your family?</label>
+        <textarea id="a2" maxlength="400" data-count="c2"></textarea>
+        <div class="count" id="c2">0 / 400</div>
+      </div>
+      
+
+      <div class="card">
+        <label class="q">Family photo</label>
+        <label class="photo-drop" for="photo">
+          <img id="preview" alt="Photo preview">
+          <span id="photoHint">A favorite family picture, from any time of year</span>
+          <span class="btn-pick" id="pickText">Choose a photo</span>
+        </label>
+        <input type="file" id="photo" accept="image/*">
+        <p class="hint">Photos are only used for the ward slideshow.</p>
+      </div>
+
+      <div class="card">
+        <label class="consent">
+          <input type="checkbox" id="consent">
+          <span>Yes, our photo and answers may be shown in the slideshow at the ward Christmas party.</span>
+        </label>
+      </div>
+
+      <div class="error" id="err"></div>
+      <button type="submit" class="submit" id="go">Send our Christmas memories</button>
+    </form>
+
+    <div class="thanks" id="thanks">
+      <div class="star">✦</div>
+      <h2>Thank you!</h2>
+      <p>Your family's memories are on their way. We can't wait to share them at the party.</p>
+      <p>Merry Christmas!</p>
+    </div>
+  </main>
+
+<script>
+  /* ====== EDIT THESE ====== */
+  var CONFIG = {
+    SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbzafNetkTwtC6kh8rgnuEPxvznGrCwK9diEvsd8ngddSBYF-nukw7Iz9_TwaYZETmNF/exec',
+    WARD_NAME: 'Our Ward',
+    PARTY_TITLE: 'Ward Christmas Party',
+    DEADLINE_TEXT: 'Please respond by December 7'   // '' to hide
+  };
+  /* ======================== */
+  document.getElementById('wardName').textContent = CONFIG.WARD_NAME;
+  document.getElementById('partyTitle').textContent = CONFIG.PARTY_TITLE;
+  var dl = document.getElementById('deadline');
+  if (CONFIG.DEADLINE_TEXT) dl.textContent = CONFIG.DEADLINE_TEXT; else dl.style.display = 'none';
+  var MAX_PX = 1600;           // longest edge after resize
+  var photoDataUrl = null;
+
+  document.querySelectorAll('textarea[data-count]').forEach(function (ta) {
+    var c = document.getElementById(ta.dataset.count), max = ta.maxLength;
+    ta.addEventListener('input', function () { c.textContent = ta.value.length + ' / ' + max; });
+  });
+
+  document.getElementById('photo').addEventListener('change', function (e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var hint = document.getElementById('photoHint');
+    hint.textContent = 'Preparing photo…';
+    resizeImage(file, MAX_PX).then(function (url) {
+      photoDataUrl = url;
+      var p = document.getElementById('preview');
+      p.src = url; p.style.display = 'block';
+      hint.textContent = 'Looks great!';
+      document.getElementById('pickText').textContent = 'Choose a different photo';
+    }).catch(function () {
+      photoDataUrl = null;
+      hint.textContent = "We couldn't read that photo. Please try another one (JPG or PNG works best).";
+    });
+  });
+
+  // Downscale on the phone so uploads are fast and small; also converts HEIC→JPEG where the browser can decode it.
+  function resizeImage(file, maxPx) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, maxPx / Math.max(img.naturalWidth, img.naturalHeight));
+        var c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * s);
+        c.height = Math.round(img.naturalHeight * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        resolve(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(); };
+      img.src = url;
+    });
+  }
+
+  function showError(msg) {
+    var e = document.getElementById('err');
+    e.textContent = msg; e.style.display = 'block';
+    e.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  document.getElementById('f').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    document.getElementById('err').style.display = 'none';
+    var family = document.getElementById('family').value.trim();
+    var answers = [0, 1, 2].map(function (i) { return document.getElementById('a' + i).value.trim(); });
+    if (!family) return showError('Please enter your family name.');
+    if (answers.some(function (a) { return !a; })) return showError('Please answer all three questions.');
+    if (!photoDataUrl) return showError('Please add a family photo.');
+    if (!document.getElementById('consent').checked) return showError('Please check the box so we can include you in the slideshow.');
+
+    var btn = document.getElementById('go');
+    btn.disabled = true; btn.textContent = 'Sending…';
+    // text/plain body = "simple" CORS request: no preflight, no Google cookies sent
+    fetch(CONFIG.SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ familyName: family, answers: answers, consent: true,
+                             photo: { dataUrl: photoDataUrl } })
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.error);
+        document.getElementById('f').style.display = 'none';
+        document.getElementById('thanks').style.display = 'block';
+        window.scrollTo(0, 0);
+      })
+      .catch(function (err) {
+        btn.disabled = false; btn.textContent = 'Send our Christmas memories';
+        showError((err && err.message && err.message !== 'Failed to fetch') ? err.message
+          : 'Something went wrong sending your memories. Please check your connection and try again.');
+      });
+  });
+</script>
+</body>
+</html>

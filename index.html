@@ -40,23 +40,8 @@
     @keyframes twinkle { from { opacity:.35; } to { opacity:1; } }
 
     .star {
-      position:relative; z-index:1; width:34px; height:34px; margin:0 auto 6px;
+      position:relative; z-index:1; width:34px; height:34px; margin:0 auto 14px;
       filter:drop-shadow(0 0 10px rgba(255,236,180,.9));
-    }
-    .christus-wrap { position:relative; z-index:1; width:min(250px, 66vw); aspect-ratio:985 / 1280; margin:6px auto 14px; }
-    .christus-wrap::before { /* soft white halo */
-      content:""; position:absolute; inset:-44px;
-      background:radial-gradient(ellipse closest-side at 50% 50%, rgba(255,245,220,.26) 0, rgba(255,250,235,.10) 55%, transparent 100%);
-    }
-    .christus {
-      position:relative; display:block; width:100%; height:100%; object-fit:cover; object-position:center;
-      /* feather all four edges so the whole drawing shows and melts into the night sky */
-      -webkit-mask-image:linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%),
-                         linear-gradient(to bottom, transparent 0, #000 11%, #000 89%, transparent 100%);
-              mask-image:linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%),
-                         linear-gradient(to bottom, transparent 0, #000 11%, #000 89%, transparent 100%);
-      -webkit-mask-composite:source-in; mask-composite:intersect;
-      filter:brightness(1.05) contrast(1.02);
     }
     .ward { position:relative; z-index:1; color:var(--gold); letter-spacing:.16em; text-transform:uppercase; font-size:13px; }
     header h1 {
@@ -135,9 +120,6 @@
     .thanks .verse { color:var(--holly); }
     .thanks .verse cite { color:var(--muted); }
 
-    footer { text-align:center; font-size:12px; color:var(--muted); padding:0 18px 28px; }
-    footer a { color:var(--muted); }
-
     /* ---------- Snow ---------- */
     .snow { position:fixed; inset:0; pointer-events:none; z-index:2; overflow:hidden; }
     .flake {
@@ -162,10 +144,6 @@
     <svg class="star" viewBox="0 0 24 24" aria-hidden="true">
       <path fill="#ffe9a8" d="M12 0l2.2 8.6L24 12l-9.8 3.4L12 24l-2.2-8.6L0 12l9.8-3.4z"/>
     </svg>
-    <div class="christus-wrap" id="featureWrap">
-      <img class="christus" src="nativity.jpg" alt="The Nativity, by Ted Henninger"
-           onerror="document.getElementById('featureWrap').style.display='none'">
-    </div>
     <div class="ward" id="wardName"></div>
     <h1>Christmas Memories</h1>
     <p class="sub" id="partyTitle"></p>
@@ -258,10 +236,6 @@
     </div>
   </main>
 
-  <footer>
-    <em>The Nativity</em> by Ted Henninger, courtesy of the
-    <a href="https://www.churchofjesuschrist.org/media/image/mary-joseph-with-baby-jesus-f006e0d" target="_blank" rel="noopener">Gospel Media Library</a>.
-  </footer>
 
 <script>
   /* ====== EDIT THESE ====== */

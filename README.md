@@ -28,7 +28,7 @@ The form is hosted on GitHub Pages rather than served by Apps Script on purpose.
 | File | Where it runs | What it is |
 |---|---|---|
 | `index.html` | GitHub Pages | The form families fill in |
-| `nativity.jpg` | GitHub Pages and Google Drive | Header artwork on the form, and the title and closing slides |
+| `nativity.jpg` | Google Drive | Artwork on the title and closing slides. Not used by the form |
 | `apps-script/Code.gs` | Google Apps Script | Receives submissions, saves them, builds the slideshow |
 | `apps-script/Index.html` | Google Apps Script | The original, plainer form that the script itself serves. Kept as a fallback; see [Notes](#notes) |
 
@@ -137,7 +137,7 @@ The ward name, party title and deadline are set in both files. Change them in bo
 
 **Form colors.** The `:root` block at the top of the `<style>` section in `index.html`.
 
-**Artwork.** Replace `nativity.jpg` with your own image using the same file name, and update the credit line in the `<footer>` of `index.html`. If the image is missing, the form hides that space. The slides expect an image whose edges fade into the dark background, because it is placed without a frame.
+**Artwork.** The artwork appears only on the slideshow's title and closing slides. To use your own, upload it to Drive and put its file ID in `FEATURE_IMAGE_FILE_ID`. The slides expect an image whose edges fade into the dark background, because it is placed without a frame.
 
 ## Running it
 
